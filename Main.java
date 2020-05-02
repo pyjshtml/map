@@ -44,12 +44,21 @@ class MyList<T> implements Iterable<T>{
     arrayList = temp;
   }
   public void remove(int index){
-    Object[] temp = new Object[size-1];
-    for(int i = 0; i < size; i++){
+    size--;
+    Object[] temp = new Object[size];
+    for(int i = 0; i < arrayList.length; i++){
       if(i == index) continue;
-      temp[i] = arrayList[i > index ? i-1 : i];
+      temp[i >= index ? i-1 : i] = arrayList[i];
     }
     arrayList = temp;
+  }
+  public int indexOf(T value){
+    for(int i = 0; i < size; i++){
+      if(arrayList[i].equals(value) || arrayList[i] == value){
+        return i;
+      }
+    }
+    return -1;
   }
   public String toString(){
     if(size == 0){
@@ -118,7 +127,6 @@ class MyMap<K,V>{
     }
   }
   public String toString(){
-    System.out.println(list);
     if(list.size()==0){
       return "{}";
     }
@@ -195,21 +203,77 @@ class Classroom{
     return students.toString();
   }
 }
+class School{
+  public int capacity;
+  private int size;
+  private static final int DEFAULT_CAPACITY = 100;
+  private MyList<Classroom> classes = new MyList<>();
+  public String name;
+  public School(String sn, int cap, int n){
+    name = sn;
+    capacity = cap;
+    size = n;
+  }
+  public School(String sn, int cap){
+    name = sn;
+    capacity = cap;
+    size = 0;
+  }
+  public School(String sn){
+    name = sn;
+    capacity = DEFAULT_CAPACITY;
+    size = 0;
+  }
+  public int size(){
+    return size;
+  }
+  public void addClass(Classroom newClass){
+    classes.add(newClass);
+  }
+  public void remove(Classroom removalClass){
+    classes.remove(classes.indexOf(removalClass));
+  }
+  public void remove(String className){
+    for(int i = 0; i < classes.size(); i++){
+      if(classes.get(i).name().equals(className)){
+        classes.remove(i);
+        break;
+      }
+    }
+  }
+  public String toString(){
+    return classes.toString();
+  }
+}
 public class Main{
+  public static void example1() throws Exception{
+    Student me = new Student("Jack",14);
+    Classroom math = new Classroom("Geometry Honors");
+    math.addStudent(new Student("Sean",14));
+    math.addStudent(me);
+    math.addStudent(new Student("Alex",14));
+    System.out.println(math);
+    math.removeStudent(me);
+    System.out.println(math);
+    math.removeStudent("Alex");
+    System.out.println(math);
+  }
   public static void main(String[] args) {
     try{
-      // MyMap<String, Integer> mapping = new MyMap<>();
-      // mapping.put("Jack", 14);
-      // mapping.put("Sean", 11);
-      // System.out.println(mapping);
-      Student me = new Student("Jack",14);
+      School victor = new School("Victor");
       Classroom math = new Classroom("Geometry Honors");
-      math.addStudent(me);
-      System.out.println(math);
-      math.removeStudent(me.name);
-      System.out.println(math);
+      Classroom english = new Classroom("Pre-AP English 9");
+      Student jack = new Student("Jack",14);
+      Student alex = new Student("Alex",14);
+      math.addStudent(jack);
+      english.addStudent(alex);
+      english.addStudent(jack);
+      victor.addClass(math);
+      victor.addClass(english);
+      System.out.println(victor);
     } catch(Exception e){
       e.printStackTrace();
     }
   }
 }
+//REVIEW: student.addClass method
