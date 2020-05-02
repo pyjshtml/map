@@ -104,8 +104,8 @@ public class Main{
   public static void main(String[] args) {
     try{
       MyMap<String, Integer> mapping = new MyMap<>();
-      mapping.put("Jack Dunfey", 14);
-      mapping.put("Sean Dunfey", 11);
+      mapping.put("Jack", 14);
+      mapping.put("Sean", 11);
       System.out.println(mapping);
     } catch(Exception e){
       e.printStackTrace();
